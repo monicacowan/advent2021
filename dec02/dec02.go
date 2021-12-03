@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func December02() int {
+func December02() (int, int) {
 	// open the file
 	file, err := os.Open("input/december02.txt")
 	if err != nil {
@@ -37,21 +37,31 @@ func December02() int {
 
 	// initialize all three categories
 	forward := 0
-	up := 0
-	down := 0
+	upA := 0
+	downA := 0
+
+	// for part b
+	aim := 0
+	depthB := 0
 
 	for _, mvmt := range movements {
 		switch mvmt.direction {
 		case "forward":
 			forward += mvmt.distance
+			depthB += aim * mvmt.distance
 		case "up":
-			up += mvmt.distance
+			upA += mvmt.distance
+			aim -= mvmt.distance
 		case "down":
-			down += mvmt.distance
+			downA += mvmt.distance
+			aim += mvmt.distance
 		}
 	}
 
-	depth := down - up
+	depthA := downA - upA
 
-	return depth * forward
+	partA := depthA * forward
+	partB := depthB * forward
+
+	return partA, partB
 }
